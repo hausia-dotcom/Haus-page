@@ -1,0 +1,315 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    background-color: #000000;
+    /* Preto absoluto para contraste máximo */
+    color: white;
+}
+
+canvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* ───────────────────────────────────────────────────────── 
+   HAUS HEADER SYSTEM
+────────────────────────────────────────────────────────── */
+.haus-header {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    /* Espaço entre as pills reduzido para maior proximidade */
+    z-index: 9999;
+    /* Garantir que sobreponha a arte generativa */
+    padding: 0 20px;
+}
+
+/* Pílula Base */
+.pill {
+    height: 38px;
+    /* Retornado ao tamanho anterior */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* 1. Logo Pill */
+.logo-pill {
+    background: linear-gradient(90deg, #000000 0%, #032b1f 100%);
+    gap: 10px;
+    width: 280px;
+    /* Aumentada amplamente a largura */
+    justify-content: center;
+    border: none;
+    /* Removida a borda para evitar renderizações / artefatos laterais */
+    overflow: hidden;
+    /* Garante que o gradiente não vaze além do border-radius */
+}
+
+.logo-img {
+    height: 38px;
+    /* Preenchimento total da altura da pílula */
+    width: auto;
+    object-fit: contain;
+}
+
+/* 2. Menu Pill */
+.menu-pill {
+    background: #ffffff;
+    gap: 60px;
+    padding: 0 60px;
+}
+
+.menu-item {
+    font-size: 13px;
+    color: #666666;
+    /* Confortável para os olhos */
+    font-weight: 400;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.menu-item:hover {
+    color: #02df82;
+    /* Verde Neon Haus no hover */
+}
+
+.menu-item.active {
+    font-weight: 800;
+    /* Em breve em negrito */
+    color: #1a1a1a;
+}
+
+.menu-item.gap-right {
+    margin-right: 16px;
+    /* Ajuste visual com os adjacentes */
+}
+
+/* 3. Status Pill */
+.status-pill {
+    background: #ffffff;
+    gap: 12px;
+    padding: 0 40px;
+    font-size: 12px;
+}
+
+.status-pill .day {
+    font-weight: 800;
+    font-size: 15px;
+    color: #1a1a1a;
+}
+
+.status-pill .date {
+    font-weight: 300;
+    font-size: 12px;
+    color: #888888;
+    margin-top: 1px;
+    /* Pequeno ajuste de alinhamento óptico */
+}
+
+/* Efeito Hover na Pílula de Status (A de Menu agora permanece estática) */
+.status-pill:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 4. Login Button (Ghost Vazado) */
+.login-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    gap: 8px;
+    font-size: 13px;
+    width: 100px;
+    /* Largura controlada */
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    outline: none;
+}
+
+.login-btn:hover {
+    border-color: #02df82;
+    background: rgba(2, 223, 130, 0.05);
+    box-shadow: 0 0 12px rgba(2, 223, 130, 0.2);
+    /* Brilho neon sutil */
+    transform: scale(1.02);
+}
+
+.login-text {
+    font-weight: 400;
+}
+
+.login-icon {
+    width: 10px;
+    height: 10px;
+}
+
+/* ───────── Responsividade ───────── */
+@media (max-width: 900px) {
+    .haus-header {
+        flex-wrap: wrap;
+        top: 20px;
+    }
+
+    .menu-pill {
+        order: 4;
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .pill {
+        padding: 0 16px;
+        font-size: 13px;
+        height: 40px;
+    }
+
+    .menu-pill {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+}
+
+/* ───────────────────────────────────────────────────────── 
+   HAUS FOOTER SYSTEM
+────────────────────────────────────────────────────────── */
+.haus-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Sombra de baixo para cima */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    padding: 40px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    z-index: 9999;
+    height: 120px;
+    /* Cobre o final da tela suavemente */
+    pointer-events: none;
+    /* Não bloqueia interações abaixo da sombra */
+}
+
+.footer-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.3);
+    /* Um pouco mais visível: 30% */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    pointer-events: auto;
+}
+
+.footer-link {
+    cursor: pointer;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #02df82;
+    /* Verde Haus no hover */
+    opacity: 1;
+    /* Ganha destaque ao interagir */
+}
+
+/* ───────────────────────────────────────────────────────── 
+   RESPONSIVIDADE HAUS MOBILE (< 768px)
+────────────────────────────────────────────────────────── */
+.haus-mobile-menu {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    /* Header (Mobile) */
+    .haus-header {
+        justify-content: space-between;
+        padding: 0 20px;
+        width: 100%;
+        gap: 0;
+    }
+
+    .logo-pill {
+        width: auto;
+        padding: 0 20px;
+    }
+
+    /* Ocultar pílulas do Header Desktop */
+    .menu-pill,
+    .status-pill,
+    .login-btn {
+        display: none;
+    }
+
+    /* O Botão de Plus Disruptivo */
+    .haus-mobile-menu {
+        display: flex;
+        position: relative;
+        width: 44px;
+        height: 44px;
+        background: rgba(2, 223, 130, 0.05);
+        border: 1px solid rgba(2, 223, 130, 0.2);
+        border-radius: 12px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+    }
+
+    .haus-mobile-menu span {
+        position: absolute;
+        background-color: #02df82;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .haus-mobile-menu span:nth-child(1) {
+        width: 16px;
+        height: 1.5px;
+    }
+
+    /* Linha Horizontal */
+    .haus-mobile-menu span:nth-child(2) {
+        height: 16px;
+        width: 1.5px;
+    }
+
+    /* Linha Vertical */
+
+    /* Footer (Mobile) */
+    .haus-footer {
+        padding: 20px;
+        justify-content: center;
+        text-align: center;
+        height: auto;
+        min-height: 80px;
+    }
+
+    .footer-text {
+        font-size: 8px;
+        font-weight: 300;
+        line-height: 1.5;
+        max-width: 90%;
+        letter-spacing: 0.4px;
+        color: rgba(255, 255, 255, 0.25);
+    }
+}

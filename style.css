@@ -49,17 +49,19 @@ canvas {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* 1. Logo Pill */
+.logo-wrapper {
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
 .logo-pill {
     background: linear-gradient(90deg, #000000 0%, #032b1f 100%);
     gap: 10px;
     width: 280px;
-    /* Aumentada amplamente a largura */
     justify-content: center;
     border: none;
-    /* Removida a borda para evitar renderizações / artefatos laterais */
     overflow: hidden;
-    /* Garante que o gradiente não vaze além do border-radius */
 }
 
 .logo-img {
@@ -254,100 +256,25 @@ canvas {
         padding: 0 20px;
     }
 
-    /* Ocultar pílulas do Header Desktop */
     .menu-pill,
-    .status-pill,
+    .status-pill {
+        display: none;
+    }
+
     .login-btn {
         display: none;
     }
 
-    /* O Botão de Plus Disruptivo */
+    .login-btn.visible-mobile {
+        display: flex;
+        width: auto;
+        padding: 0 15px;
+    }
+
+    /* O Botão de Plus Disruptivo Removido */
     .haus-mobile-menu {
-        display: flex;
-        position: relative;
-        width: 44px;
-        height: 44px;
-        background: rgba(2, 223, 130, 0.05);
-        border: 1px solid rgba(2, 223, 130, 0.2);
-        border-radius: 12px;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        backdrop-filter: blur(8px);
+        display: none;
     }
-
-    .haus-mobile-menu span {
-        position: absolute;
-        background-color: #02df82;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        width: 22px;
-        height: 1.5px;
-    }
-
-    .haus-mobile-menu span:nth-child(1) {
-        transform: translateY(-5px);
-    }
-
-    .haus-mobile-menu span:nth-child(2) {
-        transform: translateY(5px);
-    }
-
-    .haus-mobile-menu.open span:nth-child(1) {
-        transform: rotate(45deg) translateY(0);
-    }
-
-    .haus-mobile-menu.open span:nth-child(2) {
-        transform: rotate(-45deg) translateY(0);
-    }
-
-    /* Side Menu (Modal) */
-    .side-menu {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        height: 100vh;
-        background: #000000;
-        z-index: 9998;
-        padding: 100px 40px;
-        transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-    }
-
-    .side-menu.open {
-        right: 0;
-    }
-
-    .side-menu .menu-item {
-        display: block;
-        font-size: 24px;
-        color: white;
-        text-decoration: none;
-    }
-
-    .side-menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.6);
-        backdrop-filter: blur(4px);
-        z-index: 9997;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.5s;
-    }
-
-    .side-menu-overlay.open {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    /* Linha Vertical */
 
     /* Footer (Mobile) */
     .haus-footer {

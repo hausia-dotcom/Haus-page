@@ -36,13 +36,13 @@ function setup() {
 
   // Inicializa a Headline
   mainHeadline = new HeadlineReveal(
-    "O ecossistema imobiliário",
-    "agora sem fronteiras",
+    ["O ecossistema", "imobiliário agora", "sem fronteiras"],
     selectedSubLines,
-    width / 2,
+    width < 768 ? 40 : width / 2,
     height * 0.38,
     _headFontSize(),
-    _subFontSize()
+    _subFontSize(),
+    width < 768 // isLeftAligned
   );
 
   // Inicialização do Logotipo Animado Canvas (40% menor em Mobile)
@@ -51,8 +51,8 @@ function setup() {
 }
 
 // Ocupar +- 80% do texto em "fronteiras" dinamicamente reduzindo em Mobile ou mantendo grande no desk
-function _headFontSize() { return width < 768 ? width * 0.075 : width > 1024 ? 72 : 50; }
-function _subFontSize() { return width < 768 ? width * 0.038 : width > 1024 ? 16 : 14; }
+function _headFontSize() { return width < 768 ? 42 : width > 1024 ? 72 : 50; }
+function _subFontSize() { return width < 768 ? 16 : width > 1024 ? 16 : 14; }
 
 function calculateGrid() {
   pointsData = [];
@@ -108,8 +108,12 @@ function draw() {
     fill(0, 0, 0, alpha);
     rect(0, y, width, 1);
   }
-  mainHeadline.display();
-  centralLogo.display();
+  if (width > 768) {
+    mainHeadline.display();
+    centralLogo.display();
+  } else {
+    mainHeadline.display();
+  }
 }
 
 function windowResized() {
@@ -127,7 +131,8 @@ function windowResized() {
   ];
 
   mainHeadline.subLines = width < 768 ? subLinesMobile : subLinesDesktop;
-  mainHeadline.recenter(width / 2, height * 0.38, _headFontSize(), _subFontSize());
+  mainHeadline.isLeftAligned = width < 768;
+  mainHeadline.recenter(width < 768 ? 40 : width / 2, height * 0.38, _headFontSize(), _subFontSize());
   centralLogo.recenter(width / 2, getLogoY());
 }
 
@@ -136,14 +141,14 @@ function windowResized() {
 // Fade-in e Scanner sincronizados para Headline E Subtexto.
 // ─────────────────────────────────────────────────────────────────────────────
 class HeadlineReveal {
-  constructor(line1, line2, subLines, x, y, headSize, subSize) {
-    this.line1 = line1;
-    this.line2 = line2;
+  constructor(headlines, subLines, x, y, headSize, subSize, isLeftAligned = false) {
+    this.headlines = Array.isArray(headlines) ? headlines : [headlines];
     this.subLines = subLines;
     this.x = x;
     this.y = y;
     this.headSize = headSize;
     this.subSize = subSize;
+    this.isLeftAligned = isLeftAligned;
     this.startTime = millis();
 
     this.fadeInHead = 500; // Fade-in headline (0.4s)
@@ -215,17 +220,15 @@ class HeadlineReveal {
     let beamNorm = scanProgress < 0.5 ? map(scanProgress, 0, 0.5, 0, 1) : map(scanProgress, 0.5, 1, 1, 0);
 
     // 3. Renderização
-    let headLeading = this.headSize * 1.2;
-    let y1 = this.y - headLeading * 0.5;
-    let y2 = this.y + headLeading * 0.5;
+    // Headlines
+    for (let i = 0; i < this.headlines.length; i++) {
+        let lineY = this.y - (this.headlines.length - 1 - i * 2) * headLeading * 0.5;
+        this._drawLine(this.headlines[i], this.x, lineY + headYOffset, this.headSize, NORMAL, headOpacity, beamNorm * (this.headlines[i].length - 1));
+    }
 
-    // Headline (aplica desvio vertical - deslize)
-    this._drawLine(this.line1, this.x, y1 + headYOffset, this.headSize, NORMAL, headOpacity, beamNorm * (this.line1.length - 1));
-    this._drawLine(this.line2, this.x, y2 + headYOffset, this.headSize, NORMAL, headOpacity, beamNorm * (this.line2.length - 1));
-
-    // Subtítulo (SURGE MAIS RÁPIDO)
+    // Subtítulo
     let subLeading = this.subSize * 1.7;
-    let subStartY = y2 + headLeading * 0.7;
+    let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * 0.2;
     for (let i = 0; i < this.subLines.length; i++) {
       let lineY = subStartY + i * subLeading;
       this._drawLine(this.subLines[i], this.x, lineY + subYOffset, this.subSize, NORMAL, subOpacity, beamNorm * (this.subLines[i].length - 1), true);

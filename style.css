@@ -49,12 +49,6 @@ canvas {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.logo-wrapper {
-    height: 38px;
-    display: flex;
-    align-items: center;
-}
-
 .logo-pill {
     background: linear-gradient(90deg, #000000 0%, #032b1f 100%);
     gap: 10px;
@@ -253,7 +247,10 @@ canvas {
 
     .logo-pill {
         width: auto;
-        padding: 0 20px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
     }
 
     .menu-pill,

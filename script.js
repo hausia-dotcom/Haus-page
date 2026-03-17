@@ -34,9 +34,14 @@ function setup() {
   // Condicional Mobile
   let selectedSubLines = width < 768 ? subLinesMobile : subLinesDesktop;
 
+  // Headlines condicional
+  let headlines = width < 768 
+    ? ["O ecossistema", "imobiliário agora", "sem fronteiras"]
+    : ["O ecossistema imobiliário", "agora sem fronteiras"];
+
   // Inicializa a Headline
   mainHeadline = new HeadlineReveal(
-    ["O ecossistema", "imobiliário agora", "sem fronteiras"],
+    headlines,
     selectedSubLines,
     width < 768 ? 40 : width / 2,
     height * 0.38,
@@ -130,6 +135,11 @@ function windowResized() {
     "precisão da inteligência artificial integrada ao seu atendimento"
   ];
 
+  let headlines = width < 768 
+    ? ["O ecossistema", "imobiliário agora", "sem fronteiras"]
+    : ["O ecossistema imobiliário", "agora sem fronteiras"];
+
+  mainHeadline.headlines = headlines;
   mainHeadline.subLines = width < 768 ? subLinesMobile : subLinesDesktop;
   mainHeadline.isLeftAligned = width < 768;
   mainHeadline.recenter(width < 768 ? 40 : width / 2, height * 0.38, _headFontSize(), _subFontSize());
@@ -168,10 +178,10 @@ class HeadlineReveal {
     textFont('Inter');
     textStyle(weight);
     textSize(fontSize);
-    textAlign(LEFT, CENTER);
-
+    textAlign(this.isLeftAligned ? LEFT : CENTER, CENTER);
     let chars = lineStr.split('');
-    let curX = cx - textWidth(lineStr) / 2;
+    let totalW = textWidth(lineStr);
+    let curX = this.isLeftAligned ? cx : cx - totalW / 2;
 
     for (let i = 0; i < chars.length; i++) {
       let dist = abs(i - beamPos);
@@ -220,6 +230,7 @@ class HeadlineReveal {
     let beamNorm = scanProgress < 0.5 ? map(scanProgress, 0, 0.5, 0, 1) : map(scanProgress, 0.5, 1, 1, 0);
 
     // 3. Renderização
+    let headLeading = this.headSize * 1.2;
     // Headlines
     for (let i = 0; i < this.headlines.length; i++) {
         let lineY = this.y - (this.headlines.length - 1 - i * 2) * headLeading * 0.5;

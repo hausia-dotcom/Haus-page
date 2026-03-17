@@ -22,14 +22,12 @@ function setup() {
   updateDate();
 
   let subLinesMobile = [
-    "Ativos de elite em todo o",
-    "Brasil com IA integrada ao",
-    "seu atendimento"
+    "Ativos de elite em todo o Brasil com",
+    "IA integrada ao seu atendimento"
   ];
 
   let subLinesDesktop = [
-    "Ativos de elite em todo o Brasil com IA",
-    "integrada ao seu atendimento"
+    "Ativos de elite em todo o Brasil com IA integrada ao seu atendimento"
   ];
 
   // Condicional Mobile
@@ -131,13 +129,11 @@ function windowResized() {
   calculateGrid();
 
   let subLinesMobile = [
-    "Ativos de elite em todo o",
-    "Brasil com IA integrada ao",
-    "seu atendimento"
+    "Ativos de elite em todo o Brasil com",
+    "IA integrada ao seu atendimento"
   ];
   let subLinesDesktop = [
-    "Ativos de elite em todo o Brasil com IA",
-    "integrada ao seu atendimento"
+    "Ativos de elite em todo o Brasil com IA integrada ao seu atendimento"
   ];
 
   let headlines = width < 768 
@@ -285,7 +281,7 @@ function getBaseY() {
   let headlinesCount = width < 768 ? 3 : 2;
   let gapMultiplier = width < 768 ? 0.8 : 0.4;
   let subStartY = y + (headlinesCount * headLeading * 0.5) + headLeading * gapMultiplier;
-  let totalSubLines = width < 768 ? 4 : 2;
+  let totalSubLines = width < 768 ? 2 : 1;
   let lastSubLineY = subStartY + ((totalSubLines - 1) * subLeading);
   return lastSubLineY;
 }

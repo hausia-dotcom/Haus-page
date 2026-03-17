@@ -249,7 +249,8 @@ class HeadlineReveal {
 
     // Subtítulo
     let subLeading = this.subSize * 1.7;
-    let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * 0.8;
+    let gapMultiplier = width < 768 ? 0.8 : 0.4;
+    let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * gapMultiplier;
     for (let i = 0; i < this.subLines.length; i++) {
       let lineY = subStartY + i * subLeading;
       this._drawLine(this.subLines[i], this.x, lineY + subYOffset, this.subSize, NORMAL, subOpacity, beamNorm * (this.subLines[i].length - 1), true);
@@ -284,7 +285,8 @@ function getBaseY() {
   let subLeading = subSize * 1.7;
   let y = height * 0.38;
   let headlinesCount = width < 768 ? 3 : 2;
-  let subStartY = y + (headlinesCount * headLeading * 0.5) + headLeading * 0.8;
+  let gapMultiplier = width < 768 ? 0.8 : 0.4;
+  let subStartY = y + (headlinesCount * headLeading * 0.5) + headLeading * gapMultiplier;
   let totalSubLines = width < 768 ? 4 : 2;
   let lastSubLineY = subStartY + ((totalSubLines - 1) * subLeading);
   return lastSubLineY;

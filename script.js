@@ -45,15 +45,15 @@ function setup() {
   mainHeadline = new HeadlineReveal(
     headlines,
     selectedSubLines,
-    width < 768 ? 20 : width / 2,
+    width / 2,
     height * 0.38,
     _headFontSize(),
     _subFontSize(),
-    width < 768 // isLeftAligned
+    false // isLeftAligned
   );
 
   // Inicialização do Botão
-  mainButton = new ScanningButton("Em breve...", width < 768 ? 20 : width / 2, getButtonY(), width < 768);
+  mainButton = new ScanningButton("Em breve...", width / 2, getButtonY(), false);
 
   // Inicialização do Logotipo Animado Canvas (40% menor em Mobile)
   let logoSize = width < 768 ? 60 * 0.6 : 60;
@@ -148,11 +148,11 @@ function windowResized() {
 
   mainHeadline.headlines = headlines;
   mainHeadline.subLines = width < 768 ? subLinesMobile : subLinesDesktop;
-  mainHeadline.isLeftAligned = width < 768;
-  mainHeadline.recenter(width < 768 ? 20 : width / 2, height * 0.38, _headFontSize(), _subFontSize());
+  mainHeadline.isLeftAligned = false;
+  mainHeadline.recenter(width / 2, height * 0.38, _headFontSize(), _subFontSize());
   
-  mainButton.isLeftAligned = width < 768;
-  mainButton.recenter(width < 768 ? 20 : width / 2, getButtonY());
+  mainButton.isLeftAligned = false;
+  mainButton.recenter(width / 2, getButtonY());
   centralLogo.recenter(width / 2, getLogoY());
 }
 
@@ -191,7 +191,7 @@ class HeadlineReveal {
     textAlign(LEFT, CENTER);
     let chars = lineStr.split('');
     let totalW = textWidth(lineStr);
-    let curX = this.isLeftAligned ? cx : cx - totalW / 2;
+    let curX = cx - totalW / 2;
 
     for (let i = 0; i < chars.length; i++) {
       let dist = abs(i - beamPos);
@@ -344,8 +344,6 @@ class ScanningButton {
     push();
     translate(this.x, this.y);
     rectMode(CENTER);
-    
-    if (this.isLeftAligned) translate(this.w / 2, 0);
 
     // 1. Fundo do Botão (Máscara para o scan)
     noStroke();

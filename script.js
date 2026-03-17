@@ -22,15 +22,14 @@ function setup() {
   updateDate();
 
   let subLinesMobile = [
-    "Acesse ativos de alta performance",
-    "em qualquer região e opere com",
-    "a precisão da inteligência artificial",
-    "integrada ao seu atendimento"
+    "Ativos de elite em todo o",
+    "Brasil com IA integrada ao",
+    "seu atendimento"
   ];
 
   let subLinesDesktop = [
-    "Acesse ativos de alta performance em qualquer região e opere com a",
-    "precisão da inteligência artificial integrada ao seu atendimento"
+    "Ativos de elite em todo o Brasil com IA",
+    "integrada ao seu atendimento"
   ];
 
   // Condicional Mobile
@@ -132,14 +131,13 @@ function windowResized() {
   calculateGrid();
 
   let subLinesMobile = [
-    "Acesse ativos de alta performance",
-    "em qualquer região e opere com",
-    "a precisão da inteligência artificial",
-    "integrada ao seu atendimento"
+    "Ativos de elite em todo o",
+    "Brasil com IA integrada ao",
+    "seu atendimento"
   ];
   let subLinesDesktop = [
-    "Acesse ativos de alta performance em qualquer região e opere com a",
-    "precisão da inteligência artificial integrada ao seu atendimento"
+    "Ativos de elite em todo o Brasil com IA",
+    "integrada ao seu atendimento"
   ];
 
   let headlines = width < 768 

@@ -117,6 +117,7 @@ function draw() {
   }
   if (width > 768) {
     mainHeadline.display();
+    mainButton.display();
     centralLogo.display();
   } else {
     mainHeadline.display();
@@ -243,7 +244,7 @@ class HeadlineReveal {
 
     // Subtítulo
     let subLeading = this.subSize * 1.7;
-    let gapMultiplier = width < 768 ? 0.8 : 0.4;
+    let gapMultiplier = width < 768 ? 0.8 : 0.2;
     let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * gapMultiplier;
     for (let i = 0; i < this.subLines.length; i++) {
       let lineY = subStartY + i * subLeading;
@@ -279,7 +280,7 @@ function getBaseY() {
   let subLeading = subSize * 1.7;
   let y = height * 0.38;
   let headlinesCount = width < 768 ? 3 : 2;
-  let gapMultiplier = width < 768 ? 0.8 : 0.4;
+  let gapMultiplier = width < 768 ? 0.8 : 0.2;
   let subStartY = y + (headlinesCount * headLeading * 0.5) + headLeading * gapMultiplier;
   let totalSubLines = width < 768 ? 2 : 1;
   let lastSubLineY = subStartY + ((totalSubLines - 1) * subLeading);
@@ -287,14 +288,14 @@ function getBaseY() {
 }
 
 function getButtonY() {
-  return getBaseY() + 50;
+  return getBaseY() + (width < 768 ? 70 : 80);
 }
 
 function getLogoY() {
   if (width < 768) {
     return getButtonY() + 80;
   } else {
-    return getBaseY() + 80;
+    return getButtonY() + 100;
   }
 }
 

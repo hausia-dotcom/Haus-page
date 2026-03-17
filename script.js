@@ -21,8 +21,9 @@ function setup() {
   updateDate();
 
   let subLinesMobile = [
-    "Acesse ativos de alta performance em qualquer região e",
-    "opere com a precisão da inteligência artificial",
+    "Acesse ativos de alta performance",
+    "em qualquer região e opere com",
+    "a precisão da inteligência artificial",
     "integrada ao seu atendimento"
   ];
 
@@ -43,7 +44,7 @@ function setup() {
   mainHeadline = new HeadlineReveal(
     headlines,
     selectedSubLines,
-    width < 768 ? 40 : width / 2,
+    width < 768 ? 20 : width / 2,
     height * 0.38,
     _headFontSize(),
     _subFontSize(),
@@ -126,8 +127,9 @@ function windowResized() {
   calculateGrid();
 
   let subLinesMobile = [
-    "Acesse ativos de alta performance em qualquer região e",
-    "opere com a precisão da inteligência artificial",
+    "Acesse ativos de alta performance",
+    "em qualquer região e opere com",
+    "a precisão da inteligência artificial",
     "integrada ao seu atendimento"
   ];
   let subLinesDesktop = [
@@ -142,7 +144,7 @@ function windowResized() {
   mainHeadline.headlines = headlines;
   mainHeadline.subLines = width < 768 ? subLinesMobile : subLinesDesktop;
   mainHeadline.isLeftAligned = width < 768;
-  mainHeadline.recenter(width < 768 ? 40 : width / 2, height * 0.38, _headFontSize(), _subFontSize());
+  mainHeadline.recenter(width < 768 ? 20 : width / 2, height * 0.38, _headFontSize(), _subFontSize());
   centralLogo.recenter(width / 2, getLogoY());
 }
 
@@ -178,7 +180,7 @@ class HeadlineReveal {
     textFont('Inter');
     textStyle(weight);
     textSize(fontSize);
-    textAlign(this.isLeftAligned ? LEFT : CENTER, CENTER);
+    textAlign(LEFT, CENTER);
     let chars = lineStr.split('');
     let totalW = textWidth(lineStr);
     let curX = this.isLeftAligned ? cx : cx - totalW / 2;
@@ -276,7 +278,7 @@ function getLogoY() {
   let subLeading = subSize * 1.7;
   let subStartY = y2 + headLeading * 0.7;
 
-  let totalLines = width < 768 ? 3 : 2;
+  let totalLines = width < 768 ? 4 : 2;
   let lastLineY = subStartY + ((totalLines - 1) * subLeading);
 
   return lastLineY + (width < 768 ? 50 : 80); // Respiro menor no mobile

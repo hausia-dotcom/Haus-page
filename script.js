@@ -241,7 +241,7 @@ class HeadlineReveal {
 
     // Subtítulo
     let subLeading = this.subSize * 1.7;
-    let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * 0.2;
+    let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * 0.5;
     for (let i = 0; i < this.subLines.length; i++) {
       let lineY = subStartY + i * subLeading;
       this._drawLine(this.subLines[i], this.x, lineY + subYOffset, this.subSize, NORMAL, subOpacity, beamNorm * (this.subLines[i].length - 1), true);

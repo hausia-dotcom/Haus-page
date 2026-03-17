@@ -325,9 +325,19 @@ class ScanningButton {
 
   display() {
     let t = millis();
-    // Loop de 2 segundos para o scanner
-    let scanLoop = (t % 2000) / 2000;
-    let beamNorm = scanLoop < 0.5 ? map(scanLoop, 0, 0.5, 0, 1) : map(scanLoop, 0.5, 1, 1, 0);
+    // Ciclo de 4 segundos: 2s de animação (ida e volta) + 2s de pausa
+    let cycle = 4000;
+    let progress = (t % cycle) / cycle;
+    let beamNorm;
+    
+    if (progress < 0.5) {
+      // Período de animação (primeiros 2s)
+      let animProgress = progress * 2; // 0 a 1
+      beamNorm = animProgress < 0.5 ? map(animProgress, 0, 0.5, 0, 1) : map(animProgress, 0.5, 1, 1, 0);
+    } else {
+      // Período de pausa (últimos 2s)
+      beamNorm = -5; // Fora do alcance das letras
+    }
 
     push();
     translate(this.x, this.y);

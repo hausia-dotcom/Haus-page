@@ -325,53 +325,63 @@ class ScanningButton {
 
   display() {
     let t = millis();
-    // Ciclo de 4 segundos: 2s de animação (ida e volta) + 2s de pausa
+    // Ciclo de 4 segundos: 2s de animação + 2s de pausa
     let cycle = 4000;
     let progress = (t % cycle) / cycle;
-    let beamNorm;
+    
+    let beamX = -this.w; // Posição padrão (fora)
     
     if (progress < 0.5) {
-      // Período de animação (primeiros 2s) - Apenas ida
-      beamNorm = map(progress * 2, 0, 1, 0, 1);
-    } else {
-      // Período de pausa (últimos 2s)
-      beamNorm = -10; // Fora do alcance
+      // Período de animação (primeiros 2s)
+      // Easing sutil ao finalizar (cubic-out)
+      let animProgress = progress * 2;
+      let ease = 1 - Math.pow(1 - animProgress, 3);
+      beamX = map(ease, 0, 1, -this.w, this.w);
     }
 
     push();
     translate(this.x, this.y);
     rectMode(CENTER);
     
-    // Alinhamento horizontal do botão
     if (this.isLeftAligned) translate(this.w / 2, 0);
 
-    // Corpo do Botão (Verde Haus)
+    // 1. Fundo do Botão (Máscara para o scan)
     noStroke();
     fill(2, 223, 130);
     rect(0, 0, this.w, this.h, this.r);
 
-    // Texto com efeito de Scanner (Branco)
+    // 2. Efeito de Scan no Corpo do Botão
+    if (progress < 0.5) {
+      push();
+      // Criar um recorte (clip) para o scan não vazar do botão
+      // p5js não tem clip() nativo fácil para formas complexas sem pGraphics, 
+      // mas podemos usar um gradiente linear sutil sobreposto.
+      
+      drawingContext.save();
+      // Definir área de clip via canvas nativo
+      drawingContext.beginPath();
+      drawingContext.roundRect(-this.w/2, -this.h/2, this.w, this.h, this.r);
+      drawingContext.clip();
+
+      let grad = drawingContext.createLinearGradient(beamX - 30, 0, beamX + 30, 0);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+      grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.4)');
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      
+      drawingContext.fillStyle = grad;
+      drawingContext.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+      drawingContext.restore();
+      pop();
+    }
+
+    // 3. Texto (Preto estático)
     textAlign(CENTER, CENTER);
     textFont('Inter');
     textStyle(NORMAL);
     textSize(13);
+    fill(0);
+    text(this.label, 0, 0);
     
-    let chars = this.label.split('');
-    let totalW = textWidth(this.label);
-    let curX = -totalW / 2;
-    let beamPos = beamNorm * (chars.length - 1);
-
-    for (let i = 0; i < chars.length; i++) {
-        let dist = abs(i - beamPos);
-        let intensity = exp(-pow(dist / this.beamWidth, 2));
-        intensity = constrain(intensity, 0, 1);
-        
-        // Texto base preto, scanner puxa para branco
-        let c = lerp(0, 255, intensity);
-        fill(c);
-        text(chars[i], curX + textWidth(chars[i])/2, 0);
-        curX += textWidth(chars[i]);
-    }
     pop();
   }
 }

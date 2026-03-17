@@ -51,7 +51,7 @@ function setup() {
 }
 
 // Ocupar +- 80% do texto em "fronteiras" dinamicamente reduzindo em Mobile ou mantendo grande no desk
-function _headFontSize() { return width < 768 ? width * 0.085 : width > 1024 ? 72 : 50; }
+function _headFontSize() { return width < 768 ? width * 0.075 : width > 1024 ? 72 : 50; }
 function _subFontSize() { return width < 768 ? width * 0.038 : width > 1024 ? 16 : 14; }
 
 function calculateGrid() {
@@ -330,7 +330,9 @@ class CanvasLogo {
     let c2Ease = this.easeOutQuint(c2Progress);
     let c2Rot = map(c2Ease, 0, 1, 0, angleMaxC2) * (PI / 180);
 
-    let r = 10;
+    // Border radius progressivo: 10px no mobile (320px) até 18px no desktop (1200px+)
+    let r = map(width, 320, 1200, 10, 18);
+    r = constrain(r, 10, 18);
 
     push();
     translate(this.x, currentY);

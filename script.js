@@ -120,7 +120,6 @@ function draw() {
   }
   if (width > 768) {
     mainHeadline.display();
-    mainButton.display();
     centralLogo.display();
   } else {
     mainHeadline.display();
@@ -351,8 +350,8 @@ class ScanningButton {
         let intensity = exp(-pow(dist / this.beamWidth, 2));
         intensity = constrain(intensity, 0, 1);
         
-        // Texto base escuro, scanner puxa para branco
-        let c = lerp(30, 255, intensity);
+        // Texto base preto, scanner puxa para branco
+        let c = lerp(0, 255, intensity);
         fill(c);
         text(chars[i], curX + textWidth(chars[i])/2, 0);
         curX += textWidth(chars[i]);

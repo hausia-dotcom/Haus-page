@@ -21,9 +21,8 @@ function setup() {
   updateDate();
 
   let subLinesMobile = [
-    "Acesse ativos de alta performance",
-    "em qualquer região e opere com",
-    "a precisão da inteligência artificial",
+    "Acesse ativos de alta performance em qualquer região e",
+    "opere com a precisão da inteligência artificial",
     "integrada ao seu atendimento"
   ];
 
@@ -52,7 +51,7 @@ function setup() {
 }
 
 // Ocupar +- 80% do texto em "fronteiras" dinamicamente reduzindo em Mobile ou mantendo grande no desk
-function _headFontSize() { return width < 768 ? width * 0.105 : width > 1024 ? 72 : 50; }
+function _headFontSize() { return width < 768 ? width * 0.085 : width > 1024 ? 72 : 50; }
 function _subFontSize() { return width < 768 ? width * 0.038 : width > 1024 ? 16 : 14; }
 
 function calculateGrid() {
@@ -118,9 +117,8 @@ function windowResized() {
   calculateGrid();
 
   let subLinesMobile = [
-    "Acesse ativos de alta performance",
-    "em qualquer região e opere com",
-    "a precisão da inteligência artificial",
+    "Acesse ativos de alta performance em qualquer região e",
+    "opere com a precisão da inteligência artificial",
     "integrada ao seu atendimento"
   ];
   let subLinesDesktop = [
@@ -264,7 +262,7 @@ function getLogoY() {
   let subLeading = subSize * 1.7;
   let subStartY = y2 + headLeading * 0.7;
 
-  let totalLines = width < 768 ? 4 : 2;
+  let totalLines = width < 768 ? 3 : 2;
   let lastLineY = subStartY + ((totalLines - 1) * subLeading);
 
   return lastLineY + (width < 768 ? 50 : 80); // Respiro menor no mobile
@@ -332,7 +330,7 @@ class CanvasLogo {
     let c2Ease = this.easeOutQuint(c2Progress);
     let c2Rot = map(c2Ease, 0, 1, 0, angleMaxC2) * (PI / 180);
 
-    let r = 18;
+    let r = 10;
 
     push();
     translate(this.x, currentY);
@@ -374,4 +372,14 @@ class CanvasLogo {
 
     pop();
   }
+}
+
+function toggleMenu() {
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('side-menu');
+  const overlay = document.getElementById('side-menu-overlay');
+  
+  btn.classList.toggle('open');
+  menu.classList.toggle('open');
+  overlay.classList.toggle('open');
 }

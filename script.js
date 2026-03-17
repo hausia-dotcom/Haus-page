@@ -6,6 +6,7 @@ const SCROLL_SPEED = 0.3; // pixels por frame
 // Instância da Headline e Logotipo
 let mainHeadline;
 let centralLogo;
+let mainButton;
 
 function preload() {
   img = loadImage('backgownd.png');
@@ -50,6 +51,9 @@ function setup() {
     _subFontSize(),
     width < 768 // isLeftAligned
   );
+
+  // Inicialização do Botão
+  mainButton = new ScanningButton("Em breve...", width < 768 ? 20 : width / 2, getButtonY(), width < 768);
 
   // Inicialização do Logotipo Animado Canvas (40% menor em Mobile)
   let logoSize = width < 768 ? 60 * 0.6 : 60;
@@ -116,9 +120,11 @@ function draw() {
   }
   if (width > 768) {
     mainHeadline.display();
+    mainButton.display();
     centralLogo.display();
   } else {
     mainHeadline.display();
+    mainButton.display();
   }
 }
 
@@ -145,6 +151,9 @@ function windowResized() {
   mainHeadline.subLines = width < 768 ? subLinesMobile : subLinesDesktop;
   mainHeadline.isLeftAligned = width < 768;
   mainHeadline.recenter(width < 768 ? 20 : width / 2, height * 0.38, _headFontSize(), _subFontSize());
+  
+  mainButton.isLeftAligned = width < 768;
+  mainButton.recenter(width < 768 ? 20 : width / 2, getButtonY());
   centralLogo.recenter(width / 2, getLogoY());
 }
 
@@ -268,20 +277,88 @@ function updateDate() {
   if (dateEl) dateEl.innerText = fullDate;
 }
 
-// Utils: Posição Y dinânica do Logo
-function getLogoY() {
+// Utils: Posições dinânicas
+function getButtonY() {
   let headSize = _headFontSize();
   let subSize = _subFontSize();
   let headLeading = headSize * 1.2;
-  let y = height * 0.38;
-  let y2 = y + headLeading * 0.5;
   let subLeading = subSize * 1.7;
-  let subStartY = y2 + headLeading * 0.7;
+  let y = height * 0.38;
+  let headlinesCount = width < 768 ? 3 : 2;
+  let subStartY = y + (headlinesCount * headLeading * 0.5) + headLeading * 0.8;
+  let totalSubLines = width < 768 ? 4 : 2;
+  let lastSubLineY = subStartY + ((totalSubLines - 1) * subLeading);
 
-  let totalLines = width < 768 ? 4 : 2;
-  let lastLineY = subStartY + ((totalLines - 1) * subLeading);
+  return lastSubLineY + (width < 768 ? 50 : 70);
+}
 
-  return lastLineY + (width < 768 ? 50 : 80); // Respiro menor no mobile
+function getLogoY() {
+  return getButtonY() + (width < 768 ? 80 : 110);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Classe ScanningButton
+// Botão sofisticado com efeito de scan contínuo em loop.
+// ─────────────────────────────────────────────────────────────────────────────
+class ScanningButton {
+  constructor(label, x, y, isLeftAligned = false) {
+    this.label = label;
+    this.x = x;
+    this.y = y;
+    this.w = 140;
+    this.h = 38;
+    this.r = 10;
+    this.isLeftAligned = isLeftAligned;
+    this.beamWidth = 8;
+  }
+
+  recenter(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  display() {
+    let t = millis();
+    // Loop de 2 segundos para o scanner
+    let scanLoop = (t % 2000) / 2000;
+    let beamNorm = scanLoop < 0.5 ? map(scanLoop, 0, 0.5, 0, 1) : map(scanLoop, 0.5, 1, 1, 0);
+
+    push();
+    translate(this.x, this.y);
+    rectMode(CENTER);
+    
+    // Alinhamento horizontal do botão
+    if (this.isLeftAligned) translate(this.w / 2, 0);
+
+    // Corpo do Botão (Verde Haus)
+    noStroke();
+    fill(2, 223, 130);
+    rect(0, 0, this.w, this.h, this.r);
+
+    // Texto com efeito de Scanner (Branco)
+    textAlign(CENTER, CENTER);
+    textFont('Inter');
+    textStyle(NORMAL);
+    textSize(13);
+    
+    let chars = this.label.split('');
+    let totalW = textWidth(this.label);
+    let curX = -totalW / 2;
+    let beamPos = beamNorm * (chars.length - 1);
+
+    for (let i = 0; i < chars.length; i++) {
+        let dist = abs(i - beamPos);
+        let intensity = exp(-pow(dist / this.beamWidth, 2));
+        intensity = constrain(intensity, 0, 1);
+        
+        // Texto base escuro, scanner puxa para branco
+        let c = lerp(30, 255, intensity);
+        fill(c);
+        text(chars[i], curX + textWidth(chars[i])/2, 0);
+        curX += textWidth(chars[i]);
+    }
+    pop();
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

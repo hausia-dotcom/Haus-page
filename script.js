@@ -277,7 +277,7 @@ function updateDate() {
 }
 
 // Utils: Posições dinânicas
-function getButtonY() {
+function getBaseY() {
   let headSize = _headFontSize();
   let subSize = _subFontSize();
   let headLeading = headSize * 1.2;
@@ -287,12 +287,19 @@ function getButtonY() {
   let subStartY = y + (headlinesCount * headLeading * 0.5) + headLeading * 0.8;
   let totalSubLines = width < 768 ? 4 : 2;
   let lastSubLineY = subStartY + ((totalSubLines - 1) * subLeading);
+  return lastSubLineY;
+}
 
-  return lastSubLineY + (width < 768 ? 50 : 70);
+function getButtonY() {
+  return getBaseY() + 50;
 }
 
 function getLogoY() {
-  return getButtonY() + (width < 768 ? 80 : 110);
+  if (width < 768) {
+    return getButtonY() + 80;
+  } else {
+    return getBaseY() + 80;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

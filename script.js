@@ -235,7 +235,7 @@ class HeadlineReveal {
     let beamNorm = scanProgress < 0.5 ? map(scanProgress, 0, 0.5, 0, 1) : map(scanProgress, 0.5, 1, 1, 0);
 
     // 3. Renderização
-    let headLeading = this.headSize * 1.2;
+    let headLeading = this.headSize * 1.1;
     // Headlines
     for (let i = 0; i < this.headlines.length; i++) {
         let lineY = this.y - (this.headlines.length - 1 - i * 2) * headLeading * 0.5;
@@ -243,7 +243,7 @@ class HeadlineReveal {
     }
 
     // Subtítulo
-    let subLeading = this.subSize * 1.7;
+    let subLeading = this.subSize * 1.4;
     let gapMultiplier = width < 768 ? 0.8 : 0.2;
     let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * gapMultiplier;
     for (let i = 0; i < this.subLines.length; i++) {
@@ -276,8 +276,8 @@ function updateDate() {
 function getBaseY() {
   let headSize = _headFontSize();
   let subSize = _subFontSize();
-  let headLeading = headSize * 1.2;
-  let subLeading = subSize * 1.7;
+  let headLeading = headSize * 1.1;
+  let subLeading = subSize * 1.4;
   let y = height * 0.38;
   let headlinesCount = width < 768 ? 3 : 2;
   let gapMultiplier = width < 768 ? 0.8 : 0.2;

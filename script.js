@@ -117,7 +117,6 @@ function draw() {
   }
   if (width > 768) {
     mainHeadline.display();
-    mainButton.display();
     centralLogo.display();
   } else {
     mainHeadline.display();

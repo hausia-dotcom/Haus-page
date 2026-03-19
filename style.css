@@ -47,15 +47,17 @@ canvas {
     padding: 0 20px;
     font-size: 13px;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    white-space: nowrap; /* Impede quebra de linha interna */
 }
 
 .logo-pill {
     background: linear-gradient(90deg, #000000 0%, #032b1f 100%);
     gap: 10px;
-    width: 280px;
+    width: 260px; /* Reduzi levemente */
     justify-content: center;
     border: none;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .logo-img {
@@ -68,8 +70,11 @@ canvas {
 /* 2. Menu Pill */
 .menu-pill {
     background: #ffffff;
-    gap: 60px;
-    padding: 0 60px;
+    gap: 40px; /* Reduzi de 60px para 40px */
+    padding: 0 40px; /* Reduzi de 60px para 40px */
+    flex-shrink: 1;
+    min-width: 0;
+    white-space: nowrap;
 }
 
 .menu-item {
@@ -79,6 +84,7 @@ canvas {
     font-weight: 400;
     cursor: pointer;
     transition: color 0.2s;
+    white-space: nowrap; /* Garante que o texto não quebre linha */
 }
 
 .menu-item:hover {
@@ -132,11 +138,12 @@ canvas {
     color: #ffffff;
     gap: 8px;
     font-size: 13px;
-    width: 100px;
+    width: 90px; /* Reduzi levemente */
     /* Largura controlada */
     justify-content: center;
     backdrop-filter: blur(8px);
     outline: none;
+    flex-shrink: 0;
 }
 
 .login-btn:hover {
@@ -157,17 +164,42 @@ canvas {
 }
 
 /* ───────── Responsividade ───────── */
-@media (max-width: 900px) {
+/* ───────── Responsividade Tablet/Intermediária ───────── */
+@media (max-width: 1100px) {
+    .menu-pill {
+        gap: 20px;
+        padding: 0 30px;
+    }
+}
+
+@media (max-width: 960px) {
     .haus-header {
         flex-wrap: wrap;
         top: 20px;
+        gap: 10px;
+    }
+
+    .logo-pill {
+        width: 200px;
+        order: 1;
+    }
+    
+    .status-pill {
+        order: 2;
+        padding: 0 20px;
+    }
+
+    .login-btn {
+        order: 3;
     }
 
     .menu-pill {
         order: 4;
         width: 100%;
-        justify-content: center;
-        margin-top: 10px;
+        justify-content: space-around;
+        margin-top: 5px;
+        gap: 15px;
+        padding: 0 20px;
     }
 }
 

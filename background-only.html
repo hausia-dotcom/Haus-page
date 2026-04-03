@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hausbr.com - Somente Background</title>
+    <link rel="stylesheet" href="style.css?v=27">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <style>
+        /* O culta o conteúdo para focar no background */
+        .haus-header, .haus-footer {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Os IDs são mantidos para não quebrar o script.js, mas os elementos estão ocultos -->
+    <header class="haus-header" style="display:none">
+        <div id="current-day"></div>
+        <div id="current-date"></div>
+    </header>
+    <footer class="haus-footer" style="display:none"></footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Sobrescrevendo os métodos de desenho das classes para não mostrar nada no canvas
+        // Isso garante que apenas o background de pontos permaneça visível.
+        if (typeof HeadlineReveal !== 'undefined') HeadlineReveal.prototype.display = function() {};
+        if (typeof ScanningButton !== 'undefined') ScanningButton.prototype.display = function() {};
+        if (typeof CanvasLogo !== 'undefined') CanvasLogo.prototype.display = function() {};
+    </script>
+</body>
+</html>

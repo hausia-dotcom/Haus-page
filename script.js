@@ -167,10 +167,11 @@ class HeadlineReveal {
     this.isLeftAligned = isLeftAligned;
     this.startTime = millis();
 
-    this.fadeInHead = 500; // Fade-in headline (0.4s)
-    this.fadeInSub = 500; // Fade-in subtexto SUPER rápido (0.25s)
-    this.scanDuration = 2000; // Scanner rápido (0.6s)
-    this.beamWidth = 6;
+    this.fadeInHead = 1200; // Suave (1.2s)
+    this.fadeInSub = 1200;  // Suave (1.2s)
+    this.subDelay = 300;    // Delay para o subtexto
+    this.scanDuration = 2500; // Scanner mais elegante
+    this.beamWidth = 8;
   }
 
   recenter(x, y, headSize, subSize) {
@@ -218,18 +219,18 @@ class HeadlineReveal {
     let elapsed = millis() - this.startTime;
 
     // 1. Fade-ins Independentes e Slide-Up
-    let headOpacity = constrain(map(elapsed, 0, this.fadeInHead, 0, 255), 0, 255);
-    let subOpacity = constrain(map(elapsed, 0, this.fadeInSub, 0, 255), 0, 255);
-
-    // Movimento de Deslizar (Slide Up) usando easing cubic-out
     let headProgress = constrain(elapsed / this.fadeInHead, 0, 1);
-    let subProgress = constrain(elapsed / this.fadeInSub, 0, 1);
+    let subProgress = constrain((elapsed - this.subDelay) / this.fadeInSub, 0, 1);
 
-    let headEase = 1 - Math.pow(1 - headProgress, 3);
-    let subEase = 1 - Math.pow(1 - subProgress, 3);
+    // Easing Quartic Out para sofisticação
+    let headEase = 1 - Math.pow(1 - headProgress, 4);
+    let subEase = subProgress > 0 ? 1 - Math.pow(1 - subProgress, 4) : 0;
 
-    let headYOffset = map(headEase, 0, 1, 40, 0); // Desliza de 40px abaixo para 0
-    let subYOffset = map(subEase, 0, 1, 40, 0);
+    let headOpacity = headEase * 255;
+    let subOpacity = subEase * 255;
+
+    let headYOffset = map(headEase, 0, 1, 30, 0); 
+    let subYOffset = map(subEase, 0, 1, 30, 0);
 
     // 2. Scanner Sincronizado (Ida e Volta)
     let scanProgress = constrain(elapsed / this.scanDuration, 0, 1);
@@ -314,6 +315,8 @@ class ScanningButton {
     this.r = 10;
     this.isLeftAligned = isLeftAligned;
     this.beamWidth = 8;
+    this.entranceTime = 1000; // Delay maior que o texto
+    this.fadeInDuration = 1200;
   }
 
   recenter(x, y) {
@@ -323,27 +326,31 @@ class ScanningButton {
 
   display() {
     let t = millis();
-    // Ciclo de 4 segundos: 2s de animação + 2s de pausa
+    
+    // Entrance animation
+    let entProgress = constrain((t - this.entranceTime) / this.fadeInDuration, 0, 1);
+    let entEase = 1 - Math.pow(1 - entProgress, 4);
+    let alpha = entEase * 255;
+    let yOffset = map(entEase, 0, 1, 30, 0);
+
+    // Ciclo do Scanner
     let cycle = 4000;
     let progress = (t % cycle) / cycle;
-    
-    let beamX = -this.w; // Posição padrão (fora)
+    let beamX = -this.w;
     
     if (progress < 0.5) {
-      // Período de animação (primeiros 2s)
-      // Easing sutil ao finalizar (cubic-out)
       let animProgress = progress * 2;
-      let ease = 1 - Math.pow(1 - animProgress, 3);
-      beamX = map(ease, 0, 1, -this.w, this.w);
+      let scanEase = 1 - Math.pow(1 - animProgress, 3);
+      beamX = map(scanEase, 0, 1, -this.w, this.w);
     }
 
     push();
-    translate(this.x, this.y);
+    translate(this.x, this.y + yOffset);
     rectMode(CENTER);
 
     // 1. Fundo do Botão (Máscara para o scan)
     noStroke();
-    fill(2, 223, 130);
+    fill(2, 223, 130, alpha);
     rect(0, 0, this.w, this.h, this.r);
 
     // 2. Efeito de Scan no Corpo do Botão
@@ -375,7 +382,7 @@ class ScanningButton {
     textFont('Inter');
     textStyle(NORMAL);
     textSize(13);
-    fill(0);
+    fill(0, 0, 0, alpha);
     text(this.label, 0, 0);
     
     pop();
@@ -392,9 +399,9 @@ class CanvasLogo {
     this.y = y;
     this.w = w;
     this.h = h;
-    this.entranceTime = 1000;
-    this.triggerTime = 2000;
-    this.hoverFactor = 0; // 0 = normal, 1 = mouse sobre (fechado)
+    this.entranceTime = 800; // Entre o subtexto e o botão
+    this.triggerTime = 2200; // Início da rotação elástica
+    this.hoverFactor = 0;
   }
 
   recenter(x, y) {
@@ -410,10 +417,10 @@ class CanvasLogo {
     let t = millis();
 
     // 1. Entrance Fade & Slide Up
-    let entranceProgress = constrain((t - this.entranceTime) / 1000, 0, 1);
-    let entEase = this.easeOutQuint(entranceProgress);
+    let entranceProgress = constrain((t - this.entranceTime) / 1200, 0, 1);
+    let entEase = 1 - Math.pow(1 - entranceProgress, 4);
     let alpha = entEase * 255;
-    let mainYOffset = map(entEase, 0, 1, 40, 0);
+    let mainYOffset = map(entEase, 0, 1, 30, 0);
 
     if (alpha <= 0) return;
 

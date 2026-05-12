@@ -5,8 +5,9 @@ const SCROLL_SPEED = 0.3; // pixels por frame
 
 // Instância da Headline e Logotipo
 let mainHeadline;
-let centralLogo;
 let mainButton;
+let centralLogo;
+let particlesAlpha = 0; // Para entrada suave do background
 
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
@@ -19,8 +20,6 @@ function setup() {
     calculateGrid();
   });
 
-  img.loadPixels();
-  calculateGrid();
   updateDate();
 
   let subLinesMobile = [
@@ -65,9 +64,9 @@ function _subFontSize() { return width < 768 ? 13 : width > 1024 ? 18 : 16; }
 
 function calculateGrid() {
   pointsData = [];
+  if (!img || img.width <= 1 || img.height <= 1 || !img.pixels || img.pixels.length === 0) return;
   let imgW = img.width;
   let imgH = img.height;
-  if (imgW <= 0 || imgH <= 0) return;
   let imgRatio = imgW / imgH;
   let canvasRatio = width / height;
   let s, offX = 0, offY = 0;
@@ -99,7 +98,13 @@ function calculateGrid() {
 
 function draw() {
   background('#000000');
-  stroke(2, 223, 130, 153);
+  
+  // Entrada suave das partículas
+  if (pointsData.length > 0) {
+    particlesAlpha = lerp(particlesAlpha, 153, 0.05);
+  }
+  
+  stroke(2, 223, 130, particlesAlpha);
   scrollX += SCROLL_SPEED;
   let offset = scrollX % width;
   for (let i = 0; i < pointsData.length; i++) {

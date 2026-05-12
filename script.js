@@ -8,35 +8,37 @@ let mainHeadline;
 let centralLogo;
 let mainButton;
 
-function preload() {
-  img = loadImage('backgownd.png');
-}
-
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0, 0);
   canvas.style('z-index', '-1');
+
+  // Load image without preload to avoid "loading" text
+  img = loadImage('backgownd.png', () => {
+    img.loadPixels();
+    calculateGrid();
+  });
 
   img.loadPixels();
   calculateGrid();
   updateDate();
 
   let subLinesMobile = [
-    "Ativos de elite em todo o Brasil com",
-    "IA integrada ao seu atendimento"
+    "Menos rotina técnica, mais fechamentos. Sua",
+    "inteligência para vender o topo do mercado"
   ];
 
   let subLinesDesktop = [
-    "Ativos de elite em todo o Brasil com IA integrada ao seu atendimento"
+    "Menos rotina técnica, mais fechamentos. Sua inteligência para vender o topo do mercado"
   ];
 
   // Condicional Mobile
   let selectedSubLines = width < 768 ? subLinesMobile : subLinesDesktop;
 
   // Headlines condicional
-  let headlines = width < 768 
-    ? ["O ecossistema", "imobiliário agora", "sem fronteiras"]
-    : ["O ecossistema imobiliário", "agora sem fronteiras"];
+  let headlines = width < 768
+    ? ["A infraestrutura de liquidez", "para o novo mercado", "imobiliário"]
+    : ["A infraestrutura de liquidez", "para o novo mercado imobiliário"];
 
   // Inicializa a Headline
   mainHeadline = new HeadlineReveal(
@@ -58,8 +60,8 @@ function setup() {
 }
 
 // Ocupar +- 80% do texto em "fronteiras" dinamicamente reduzindo em Mobile ou mantendo grande no desk
-function _headFontSize() { return width < 768 ? 42 : width > 1024 ? 72 : 50; }
-function _subFontSize() { return width < 768 ? 16 : width > 1024 ? 16 : 14; }
+function _headFontSize() { return width < 768 ? 27 : width > 1024 ? 65 : 45; }
+function _subFontSize() { return width < 768 ? 13 : width > 1024 ? 18 : 16; }
 
 function calculateGrid() {
   pointsData = [];
@@ -97,7 +99,7 @@ function calculateGrid() {
 
 function draw() {
   background('#000000');
-  stroke(2, 223, 130, 75);
+  stroke(2, 223, 130, 153);
   scrollX += SCROLL_SPEED;
   let offset = scrollX % width;
   for (let i = 0; i < pointsData.length; i++) {
@@ -115,13 +117,8 @@ function draw() {
     fill(0, 0, 0, alpha);
     rect(0, y, width, 1);
   }
-  if (width > 768) {
-    mainHeadline.display();
+  mainHeadline.display();
     centralLogo.display();
-  } else {
-    mainHeadline.display();
-    mainButton.display();
-  }
 }
 
 function windowResized() {
@@ -129,16 +126,16 @@ function windowResized() {
   calculateGrid();
 
   let subLinesMobile = [
-    "Ativos de elite em todo o Brasil com",
-    "IA integrada ao seu atendimento"
+    "Menos rotina técnica, mais fechamentos. Sua",
+    "inteligência para vender o topo do mercado"
   ];
   let subLinesDesktop = [
-    "Ativos de elite em todo o Brasil com IA integrada ao seu atendimento"
+    "Menos rotina técnica, mais fechamentos. Sua inteligência para vender o topo do mercado"
   ];
 
-  let headlines = width < 768 
-    ? ["O ecossistema", "imobiliário agora", "sem fronteiras"]
-    : ["O ecossistema imobiliário", "agora sem fronteiras"];
+  let headlines = width < 768
+    ? ["A infraestrutura de liquidez", "para o novo mercado", "imobiliário"]
+    : ["A infraestrutura de liquidez", "para o novo mercado imobiliário"];
 
   mainHeadline.headlines = headlines;
   mainHeadline.subLines = width < 768 ? subLinesMobile : subLinesDesktop;
@@ -199,8 +196,8 @@ class HeadlineReveal {
         g = lerp(255, 223, beamIntensity);
         b = lerp(255, 130, beamIntensity);
       } else {
-        // Subtítulo: base 180 (cinza), scanner puxa para 255 (branco)
-        let c = lerp(180, 255, beamIntensity);
+        // Subtítulo: base mais clara (cinza claro), scanner puxa para branco
+        let c = lerp(220, 255, beamIntensity);
         r = g = b = c;
       }
 
@@ -243,7 +240,7 @@ class HeadlineReveal {
 
     // Subtítulo
     let subLeading = this.subSize * 1.4;
-    let gapMultiplier = width < 768 ? 0.8 : 0.2;
+    let gapMultiplier = width < 768 ? 0.6 : 0.35;
     let subStartY = this.y + (this.headlines.length * headLeading * 0.5) + headLeading * gapMultiplier;
     for (let i = 0; i < this.subLines.length; i++) {
       let lineY = subStartY + i * subLeading;
@@ -279,7 +276,7 @@ function getBaseY() {
   let subLeading = subSize * 1.4;
   let y = height * 0.38;
   let headlinesCount = width < 768 ? 3 : 2;
-  let gapMultiplier = width < 768 ? 0.8 : 0.2;
+  let gapMultiplier = width < 768 ? 0.6 : 0.35;
   let subStartY = y + (headlinesCount * headLeading * 0.5) + headLeading * gapMultiplier;
   let totalSubLines = width < 768 ? 2 : 1;
   let lastSubLineY = subStartY + ((totalSubLines - 1) * subLeading);
@@ -292,9 +289,9 @@ function getButtonY() {
 
 function getLogoY() {
   if (width < 768) {
-    return getButtonY() + 80;
+    return getBaseY() + 60;
   } else {
-    return getButtonY() + 100;
+    return getButtonY() + 40;
   }
 }
 
@@ -492,8 +489,101 @@ function toggleMenu() {
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('side-menu');
   const overlay = document.getElementById('side-menu-overlay');
-  
+
   btn.classList.toggle('open');
   menu.classList.toggle('open');
   overlay.classList.toggle('open');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODAL DE SOLICITACAO DE ACESSO
+// ─────────────────────────────────────────────────────────────────────────────
+const requestAccessBtn = document.getElementById('request-access-btn');
+const modalOverlay = document.getElementById('access-modal');
+const modalClose = document.getElementById('modal-close');
+const accessForm = document.getElementById('access-form');
+const modalSuccess = document.getElementById('modal-success');
+const accessFormContainer = document.getElementById('access-form').parentElement;
+
+function openModal() {
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+if (requestAccessBtn) {
+  requestAccessBtn.addEventListener('click', openModal);
+}
+
+if (modalClose) {
+  modalClose.addEventListener('click', closeModal);
+}
+
+if (modalOverlay) {
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) {
+      closeModal();
+    }
+  });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && modalOverlay.classList.contains('open')) {
+    closeModal();
+  }
+});
+
+// Mascara WhatsApp
+const accessWhatsappInput = document.getElementById('access-whatsapp');
+if (accessWhatsappInput) {
+  accessWhatsappInput.addEventListener('input', function(e) {
+    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})(\d{0,5})(\d{0,4})/);
+    if (!x) return;
+
+    if (!x[1]) {
+      e.target.value = '';
+    } else if (!x[2] && x[1]) {
+      e.target.value = '+' + x[1];
+    } else if (x[2] && !x[3]) {
+      e.target.value = '+' + x[1] + ' (' + x[2];
+    } else if (x[3] && !x[4]) {
+      e.target.value = '+' + x[1] + ' (' + x[2] + ') ' + x[3];
+    } else if (x[4]) {
+      e.target.value = '+' + x[1] + ' (' + x[2] + ') ' + x[3] + '-' + x[4];
+    }
+  });
+}
+
+// Form submission
+if (accessForm) {
+  accessForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Coleta os dados
+    const formData = {
+      name: document.getElementById('access-name').value,
+      email: document.getElementById('access-email').value,
+      whatsapp: document.getElementById('access-whatsapp').value,
+      company: document.getElementById('access-company').value,
+      timestamp: new Date().toISOString()
+    };
+
+    // Salva no localStorage como demo (substituir por chamada real API)
+    const submissions = JSON.parse(localStorage.getItem('haus_access_requests') || '[]');
+    submissions.push(formData);
+    localStorage.setItem('haus_access_requests', JSON.stringify(submissions));
+
+    console.log('Solicitacao de acesso:', formData);
+
+    // Mostra sucesso
+    accessForm.style.display = 'none';
+    modalSuccess.style.display = 'block';
+
+    // Fecha modal apos 2.5s
+    setTimeout(closeModal, 2500);
+  });
 }

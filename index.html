@@ -30,7 +30,6 @@
         </div>
 
         <div class="pill menu-pill">
-            <span class="menu-item active">Em breve</span>
             <span class="menu-item">Inventário</span>
             <span class="menu-item">Inteligência</span>
             <span class="menu-item">Conexões</span>
@@ -41,8 +40,8 @@
             <span class="date" id="current-date">Março 15, 2026</span>
         </div>
 
-        <button class="pill login-btn visible-mobile">
-            <span class="login-text">Login</span>
+        <button class="pill login-btn" id="request-access-btn">
+            <span class="login-text">Solicite Acesso</span>
             <svg class="login-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 5V19L19 12L8 5Z" fill="#02df82" />
@@ -50,15 +49,45 @@
         </button>
     </header>
 
-    <footer class="haus-footer">
-        <div class="footer-text">
-            © 2026 Haus Tecnologia e Inteligência Imobiliária Ltda &bull; CNPJ 65.887.138/0001-08 &bull; <a href="termos-de-uso.html" class="footer-link">Termos de Uso</a> &bull; <a href="politica-de-privacidade.html" class="footer-link">Privacidade</a>
-            <br>
-            Rua Bananeiras, 361, Manaíra, sala 107, João Pessoa - PB, CEP 58038-170
-            <br>
-            <strong style="font-weight: 600;">FALE CONOSCO:</strong> <span style="text-transform: lowercase;">haus@hausbr.com</span>
+    <!-- Modal de Solicitação de Acesso -->
+    <div class="modal-overlay" id="access-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="#666" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <h2>Solicite Acesso</h2>
+            <p class="modal-subtitle">Preencha seus dados para entrar na lista de espera.</p>
+            <form id="access-form">
+                <div class="form-group">
+                    <label for="access-name">Nome Completo</label>
+                    <input type="text" id="access-name" name="name" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="access-email">E-mail</label>
+                    <input type="email" id="access-email" name="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="access-whatsapp">WhatsApp</label>
+                    <input type="tel" id="access-whatsapp" name="whatsapp" placeholder="+55 (00) 00000-0000" required>
+                </div>
+                <div class="form-group">
+                    <label for="access-company">Empresa / CRECI</label>
+                    <input type="text" id="access-company" name="company" placeholder="Nome da empresa ou CRECI" required>
+                </div>
+                <button type="submit" class="modal-submit">Entrar na Lista de Espera</button>
+            </form>
+            <div class="modal-success" id="modal-success" style="display: none;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill="#02df82"/>
+                    <path d="M8 12L11 15L16 9" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h3>Recebido!</h3>
+                <p>Entraremos em contato em breve.</p>
+            </div>
         </div>
-    </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>

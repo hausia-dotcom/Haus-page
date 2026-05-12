@@ -19,6 +19,11 @@ canvas {
     left: 0;
 }
 
+/* Hide p5.js loading text */
+#p5_loading {
+    display: none !important;
+}
+
 /* ───────────────────────────────────────────────────────── 
    HAUS HEADER SYSTEM
 ────────────────────────────────────────────────────────── */
@@ -69,9 +74,11 @@ canvas {
 
 /* 2. Menu Pill */
 .menu-pill {
-    background: #ffffff;
-    gap: 40px; /* Reduzi de 60px para 40px */
-    padding: 0 40px; /* Reduzi de 60px para 40px */
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    gap: 40px;
+    padding: 0 40px;
     flex-shrink: 1;
     min-width: 0;
     white-space: nowrap;
@@ -79,33 +86,31 @@ canvas {
 
 .menu-item {
     font-size: 13px;
-    color: #a1a1a1;
-    /* Mais legível que o anterior #666666 */
-    font-weight: 400;
+    color: #ffffff;
+    font-weight: 600;
     cursor: pointer;
     transition: color 0.2s;
-    white-space: nowrap; /* Garante que o texto não quebre linha */
+    white-space: nowrap;
 }
 
 .menu-item:hover {
     color: #02df82;
-    /* Verde Neon Haus no hover */
 }
 
 .menu-item.active {
     font-weight: 800;
-    /* Em breve em negrito */
-    color: #1a1a1a;
+    color: #ffffff;
 }
 
 .menu-item.gap-right {
     margin-right: 16px;
-    /* Ajuste visual com os adjacentes */
 }
 
 /* 3. Status Pill */
 .status-pill {
-    background: #ffffff;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
     gap: 12px;
     padding: 0 40px;
     font-size: 12px;
@@ -114,15 +119,14 @@ canvas {
 .status-pill .day {
     font-weight: 800;
     font-size: 15px;
-    color: #1a1a1a;
+    color: #ffffff;
 }
 
 .status-pill .date {
     font-weight: 300;
     font-size: 12px;
-    color: #a1a1a1;
+    color: rgba(255, 255, 255, 0.7);
     margin-top: 1px;
-    /* Pequeno ajuste de alinhamento óptico */
 }
 
 /* Efeito Hover na Pílula de Status (A de Menu agora permanece estática) */
@@ -138,12 +142,13 @@ canvas {
     color: #ffffff;
     gap: 8px;
     font-size: 13px;
-    width: 90px; /* Reduzi levemente */
-    /* Largura controlada */
+    padding: 0 16px;
+    height: 38px;
     justify-content: center;
     backdrop-filter: blur(8px);
     outline: none;
     flex-shrink: 0;
+    cursor: pointer;
 }
 
 .login-btn:hover {
@@ -159,8 +164,8 @@ canvas {
 }
 
 .login-icon {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
 }
 
 /* ───────── Responsividade ───────── */
@@ -295,13 +300,218 @@ canvas {
     }
 
     .login-btn {
+        display: flex;
+        width: auto;
+        padding: 0 12px;
+        height: 30px;
+        font-size: 11px;
+    }
+
+    .login-icon {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* O Botão de Plus Disruptivo Removido */
+    .haus-mobile-menu {
         display: none;
     }
 
-    .login-btn.visible-mobile {
-        display: flex;
-        width: auto;
-        padding: 0 15px;
+    /* Footer (Mobile) */
+    .haus-footer {
+        padding: 20px;
+        justify-content: center;
+        text-align: center;
+        height: auto;
+        min-height: 80px;
+    }
+
+    .footer-text {
+        font-size: 8px;
+        font-weight: 300;
+        line-height: 1.5;
+        max-width: 90%;
+        letter-spacing: 0.4px;
+        color: rgba(255, 255, 255, 0.25);
+    }
+}
+
+/* ─────────────────────────────────────────────────────────
+   MODAL DE SOLICITACAO DE ACESSO (GLOBAL)
+────────────────────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 100000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-content {
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.modal-close:hover {
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.modal-logo-pill {
+    background: linear-gradient(90deg, #000000 0%, #032b1f 100%);
+    height: 38px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 16px;
+    justify-content: center;
+}
+
+.modal-logo-img {
+    height: 28px;
+    width: auto;
+    object-fit: contain;
+}
+
+.modal-content h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.modal-subtitle {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.modal-content .form-group {
+    margin-bottom: 16px;
+}
+
+.modal-content label {
+    display: block;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-content input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.modal-content input:focus {
+    border-color: #02df82;
+    box-shadow: 0 0 0 3px rgba(2, 223, 130, 0.1);
+}
+
+.modal-submit {
+    width: 100%;
+    background: #02df82;
+    color: #000;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+}
+
+.modal-submit:hover {
+    background: #03f593;
+    transform: scale(1.01);
+}
+
+.modal-submit:active {
+    transform: scale(0.98);
+}
+
+.modal-success {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.modal-success svg {
+    margin-bottom: 16px;
+}
+
+.modal-success h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.modal-success p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+    @media (max-width: 480px) {
+        .modal-content {
+            padding: 32px 24px;
+        }
     }
 
     /* O Botão de Plus Disruptivo Removido */
